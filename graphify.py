@@ -8,47 +8,58 @@ class Graphify():
     #add new node to the data set
     def newelem(self,node,children): #add parent as a str, children as a list
         #check if node already exists
-        counter =False
-        for n in self.data:
-            if node == n['parent']:
-                counter = True
-        if counter ==False:    
-            self.data.append({'parent':node, 'children':children})
-            
+        if isinstance(children,list):
+            counter =False
+            for n in self.data:
+                if node == n['parent']:
+                    counter = True
+            if counter ==False:    
+                self.data.append({'parent':node, 'children':children})
+                
+            else:
+                self.newchildren(node, children)
         else:
-            self.newchildren(node, children)
-        
+            print('Children must be entered as a <list>')
 
 
     #add children to existing node
     def newchild(self,node,child): #add single children at time
         #check if node exists the update
-        counter =False
-        for n in self.data:
-            if n['parent']==node:
-                counter = True
-                if child not in n['children']:
-                    n['children'].append(child)
-                else:
-                    print('This child already exists')
-        if counter ==False:
-                print('Node does not exist, ', node)
+        if isinstance(child, str):
+            counter =False
+            for n in self.data:
+                if n['parent']==node:
+                    counter = True
+                    if child not in n['children']:
+                        n['children'].append(child)
+                    else:
+                        print('This child already exists')
+            if counter ==False:
+                    print('Node does not exist, ', node)
+        else:
+            print('Child must be entered as a <string>')
 
     #add children as a list
-    def newchildren(self,node,child):
-        for n in self.data:
-            if n['parent']==node:
-                for m in child:
-                    if m not in n['children']:
-                        n['children'].append(m)
-                    else:
-                        print('This child already exists, ',m)
+    def newchildren(self,node,children):
+        if isinstance(children, list):
+            for n in self.data:
+                if n['parent']==node:
+                    for m in children:
+                        if m not in n['children']:
+                            n['children'].append(m)
+                        else:
+                            print('This child already exists, ',m)
+        else: 
+            print('Children must be entered as a <list>')
 
     #remove children from a existing node
     def removechild(self,node,child):
-        for n in self.data:
-            if n['parent']==node:
-                n['children'].remove(child)
+        if isinstance(child, str):
+            for n in self.data:
+                if n['parent']==node:
+                    n['children'].remove(child)
+        else:
+            print('Child must be entered as a <string>')
 
     #name all the children for an node
     def reportchildren(self,node):
@@ -76,7 +87,7 @@ class Graphify():
 if __name__=='__main__':
     Mygraph=Graphify()
     node ='A'
-    child = ['B','C','D']
+    child = 'B'#['B','C','D']
     Mygraph.newelem(node,child)
     Mygraph.reportchildren(node) # Result: B C D
     node ='B'
